@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="text-center mb-4">
+    <h1 class="page-title">🍜 Chinese Menu</h1>
+    <p class="page-subtitle">Explore popular dishes from your campus dining platform</p>
+</div>
+
+<div class="soft-box p-4 mb-4">
+    <form method="GET" action="{{ url_for('menu') }}">
+        <div class="row g-3 align-items-center">
+            <div class="col-12 col-md-4">
+                <input
+                    type="text"
+                    name="search"
+                    class="form-control"
+                    placeholder="Search dishes..."
+                    value="{{ search or '' }}"
+                >
+            </div>
+
+            <div class="col-12 col-md-4">
+                <select name="category" class="form-select">
+                    <option value="">All Categories</option>
+                    {% for cat in categories %}
+                        <option value="{{ cat }}" {% if selected_category == cat %}selected{% endif %}>
+                            {{ cat }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-12 col-md-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary w-100">🔎 Search</button>
+                <a href="{{ url_for('menu') }}" class="btn btn-secondary w-100">Clear</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% if no_results %}
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+            <div class="empty-box">
+                <h2>No dishes found</h2>
+                <p class="muted">Try another search or choose a different category.</p>
+                <a href="{{ url_for('menu') }}" class="btn btn-primary">Show All Dishes</a>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="row">
+        {% for dish in dishes %}
+            <div class="col-12 col-md-6 col-lg-4 mb-4">
+                <div class="dish-card">
+                    <img
+                        src="{{ url_for('static', filename='images/' + dish.image) }}"
+                        alt="{{ dish.name }}"
+                        class="dish-img"
+                    >
+
+                    <div class="p-3 text-center">
+                        <h4 class="mb-2">{{ dish.name }}</h4>
+                        <div class="price mb-3">${{ dish.price }}</div>
+
+                        <div class="d-flex justify-content-center gap-2 flex-wrap">
+                            <a href="{{ url_for('dish_details', dish_id=dish.id) }}" class="btn btn-primary btn-sm">
+                                View Details
+                            </a>
+
+                   {% if current_user.is_authenticated %}
+    {% if dish.id in favorite_dish_ids %}
+        <button
+            type="button"
+            class="btn btn-danger btn-sm favorite-btn"
+            data-dish-id="{{ dish.id }}"
+        >
+            ❤️ Remove
+        </button>
+    {% else %}
+        <button
+            type="button"
+            class="btn btn-warning btn-sm favorite-btn"
+            data-dish-id="{{ dish.id }}"
+        >
+            🤍 Favorite
+        </button>
+    {% endif %}
+{% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% endblock %}

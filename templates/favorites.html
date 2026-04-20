@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="text-center mb-4">
+    <h1 class="page-title">❤️ My Favorite Dishes</h1>
+    <p class="page-subtitle">Your saved dishes</p>
+</div>
+
+{% if dishes %}
+    <div class="row">
+        {% for dish in dishes %}
+            <div class="col-12 col-md-6 col-lg-4 mb-4">
+                <div class="dish-card">
+                    <img
+                        src="{{ url_for('static', filename='images/' + dish.image) }}"
+                        alt="{{ dish.name }}"
+                        class="dish-img"
+                    >
+
+                    <div class="p-3 text-center">
+                        <h4 class="mb-2">{{ dish.name }}</h4>
+                        <div class="price mb-3">${{ dish.price }}</div>
+
+                        <div class="d-flex justify-content-center gap-2 flex-wrap">
+                            <a href="{{ url_for('dish_details', dish_id=dish.id) }}" class="btn btn-primary btn-sm">
+                                View Details
+                            </a>
+
+                            <a href="{{ url_for('remove_favorite', dish_id=dish.id) }}" class="btn btn-danger btn-sm">
+                                ❤️ Remove
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-7 col-lg-6">
+            <div class="empty-box">
+                <h2>No favorites yet</h2>
+                <p class="muted">Add some dishes to your favorites first.</p>
+                <a href="{{ url_for('menu') }}" class="btn btn-primary">Go to Menu</a>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <!-- TITLE -->
+    <div class="text-center mb-4">
+        <h1>🛠 Admin Panel</h1>
+        <p class="text-muted">Manage dishes (add / delete)</p>
+    </div>
+
+    <div class="row">
+
+        <!-- ADD DISH -->
+        <div class="col-md-5 mb-4">
+            <div class="card shadow p-3">
+                <h4 class="mb-3">Add Dish</h4>
+
+                <form method="POST" action="{{ url_for('admin') }}">
+
+                    <input type="text" name="name" class="form-control mb-2" placeholder="Dish Name" required>
+
+                    <input type="number" name="price" class="form-control mb-2" placeholder="Price" required>
+
+                    <input type="text" name="image" class="form-control mb-2" placeholder="Image (ex: friedrice.jpg)" required>
+
+                    <textarea name="description" class="form-control mb-2" placeholder="Description" required></textarea>
+
+                    <textarea name="ingredients" class="form-control mb-2" placeholder="Ingredients" required></textarea>
+
+                    <input type="text" name="category" class="form-control mb-2" placeholder="Category" required>
+
+                    <select name="spicy_level" class="form-control mb-3">
+                        <option>Low</option>
+                        <option>Medium</option>
+                        <option>High</option>
+                    </select>
+
+                    <button type="submit" class="btn btn-success w-100">
+                        Add Dish
+                    </button>
+
+                </form>
+            </div>
+        </div>
+
+        <!-- DISHES TABLE -->
+        <div class="col-md-7">
+            <div class="card shadow p-3">
+                <h4 class="mb-3">Current Dishes</h4>
+
+                <table class="table table-hover text-center align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Category</th>
+                            <th>Image</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for dish in dishes %}
+                        <tr>
+                            <td>{{ dish.id }}</td>
+                            <td>{{ dish.name }}</td>
+                            <td>${{ dish.price }}</td>
+                            <td>{{ dish.category }}</td>
+                            <td>{{ dish.image }}</td>
+
+                            <td>
+                                <form method="POST" action="{{ url_for('delete_dish', dish_id=dish.id) }}">
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

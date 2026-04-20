@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+.star {
+    font-size: 30px;
+    color: #ccc;
+    cursor: pointer;
+    transition: 0.2s;
+    margin-right: 6px;
+}
+
+.star.hover,
+.star.selected {
+    color: gold;
+}
+</style>
+
+<div class="container mt-4">
+    <div class="card shadow-sm p-4">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <img
+                    src="{{ url_for('static', filename='images/' + dish.image) }}"
+                    alt="{{ dish.name }}"
+                    class="img-fluid rounded"
+                >
+            </div>
+
+            <div class="col-md-6">
+                <h2>{{ dish.name }}</h2>
+                <h3 class="text-success mb-3">${{ dish.price }}</h3>
+
+                <p><strong>Description:</strong> {{ dish.description }}</p>
+                <p><strong>Ingredients:</strong> {{ dish.ingredients }}</p>
+                <p><strong>Category:</strong> {{ dish.category }}</p>
+                <p><strong>Spicy Level:</strong> {{ dish.spicy_level }}</p>
+
+                <p>
+                    <strong>Average Rating:</strong>
+                    <span id="avg-rating">
+                        {% if avg_rating %}
+                            {{ avg_rating }}
+                        {% else %}
+                            0
+                        {% endif %}
+                    </span>
+                    / 5
+                </p>
+
+                {% if current_user.is_authenticated %}
+                    <div class="mt-3">
+                        <h5>Rate this dish:</h5>
+                        <div id="stars" data-dish-id="{{ dish.id }}" data-user-rating="{{ user_rating or 0 }}">
+                            {% for i in range(1, 6) %}
+                                <span class="star" data-value="{{ i }}">★</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% else %}
+                    <p class="text-muted mt-3">Login to rate this dish.</p>
+                {% endif %}
+
+                <div class="mt-4">
+                    <a href="{{ url_for('menu') }}" class="btn btn-secondary">← Back to Menu</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="text-center mb-4">
+    <h1 class="page-title">🤖 Recommended Dishes</h1>
+    <p class="page-subtitle">Dishes suggested based on your favorites</p>
+</div>
+
+{% if dishes %}
+    <div class="row">
+        {% for dish in dishes %}
+            <div class="col-12 col-md-6 col-lg-4 mb-4 d-flex">
+                <div class="dish-card w-100 d-flex flex-column">
+                    <img
+                        src="{{ url_for('static', filename='images/' + dish.image) }}"
+                        alt="{{ dish.name }}"
+                        class="dish-img"
+                        style="height: 220px; object-fit: cover;"
+                    >
+
+                    <div class="p-3 text-center d-flex flex-column flex-grow-1">
+                        <h4 class="mb-2">{{ dish.name }}</h4>
+                        <div class="price mb-3">${{ dish.price }}</div>
+
+                        <div class="mt-auto">
+                            <a href="{{ url_for('dish_details', dish_id=dish.id) }}" class="btn btn-primary btn-sm">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+            <div class="empty-box">
+                <h2>No recommendations yet</h2>
+                <p class="muted">Add some favorites first to get recommendations.</p>
+                <a href="{{ url_for('menu') }}" class="btn btn-primary">Go to Menu</a>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+{% endblock %}

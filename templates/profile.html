@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="soft-box p-4 text-center">
+            <h1 class="page-title mb-3">👤 My Profile</h1>
+            <p class="page-subtitle mb-4">Your account summary</p>
+
+            <div class="card border-0 shadow-sm rounded-4 p-4">
+                <h3 class="mb-3">{{ user.username }}</h3>
+                <p class="mb-2"><strong>Favorites:</strong> {{ favorites_count }}</p>
+                <p class="mb-0"><strong>Ratings submitted:</strong> {{ ratings_count }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
